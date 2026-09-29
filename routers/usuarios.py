@@ -9,9 +9,9 @@ router = APIRouter(
 )
 
 # Funcion para crear usuarios
-@router.post('/')
+@router.post('/', response_model=schemas.UsuarioResponse)
 def create_users(user: schemas.UsuarioCreate, db: Session = Depends(get_db)):
-    new_user = models.User(name=user.name, email=user.email, password=user.password)
+    new_user = models.User(**user.model_dump())
 
     db.add(new_user)
     db.commit()
@@ -20,7 +20,7 @@ def create_users(user: schemas.UsuarioCreate, db: Session = Depends(get_db)):
     return new_user
 
 # Funcion para recibir la información del usuario
-@router.get('/{usuario_id}')
+@router.get('/{usuario_id}', response_model=schemas.UsuarioResponse)
 def read_user(usuario_id:int, db: Session = Depends(get_db)):
     user_found = db.query(models.User).filter(models.User.id==usuario_id).first()
 
@@ -29,7 +29,7 @@ def read_user(usuario_id:int, db: Session = Depends(get_db)):
 
     return user_found
 # Funcion para actualizar datos de Usuarios
-@router.patch('/{usuario_id}')
+@router.patch('/{usuario_id}', response_model=schemas.UsuarioResponse)
 def update_user(usuario_id: int, user_update: schemas.UsuarioUpdate, db: Session = Depends(get_db)):
     user_found = db.query(models.User).filter(models.User.id==usuario_id).first()
 
