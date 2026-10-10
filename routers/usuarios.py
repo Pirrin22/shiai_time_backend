@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from security import get_password_hash
 from database import get_db
 import models, schemas
 
@@ -11,7 +12,15 @@ router = APIRouter(
 # Funcion para crear usuarios
 @router.post('/', response_model=schemas.UsuarioResponse)
 def create_users(user: schemas.UsuarioCreate, db: Session = Depends(get_db)):
-    new_user = models.User(**user.model_dump())
+
+    # Convertimos los datos de Pydantic a un diccionario manipulable
+    user_dict = user.model_dump()
+
+    # Encriptamos la contraseña y la guardamos en el mismo diccionario
+    user_dict['password'] = get_password_hash(user_dict['password'])
+    
+    # Creamos el modelo de base de datos pasándole el diccionario modificado
+    new_user = models.User(**user_dict)
 
     db.add(new_user)
     db.commit()

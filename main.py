@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 import models, schemas
 from database import engine, SessionLocal
-from routers import usuarios
+from routers import usuarios, auth
 
 # Esta es la línea que crea las tablas den la base de datos.
 models.Base.metadata.create_all(bind=engine)
@@ -14,3 +14,4 @@ async def inicio():
     return {'mensaje': 'Bienvenidos a la API de Shiai Time'}
 
 app.include_router(usuarios.router)
+app.include_router(auth.router)
