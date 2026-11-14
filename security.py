@@ -2,7 +2,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
 import jwt
 from jwt.exceptions import InvalidTokenError
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
 # --- Configuración JWT ---
@@ -11,7 +11,7 @@ SECRET_KEY = 'tu_clave_secreta_super_segura_aqui_cambiala_luego'
 ALGORITHM = 'HS256'
 ACCES_TOKEN_EXPIRE_MINUTES = 30 # EL token caduca en media hora
 
-oauth2_scheme = OAuth2AuthorizationCodeBearer(tokenUrl='auth/login')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/login')
 # Configuramos passlib para que use el algoritmo bcrypt
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
