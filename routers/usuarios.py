@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from security import get_password_hash
+from security import get_password_hash, get_current_user
 from database import get_db
 import models, schemas
 
@@ -27,6 +27,10 @@ def create_users(user: schemas.UsuarioCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     return new_user
+
+@router.get('/me')
+def obtener_perfil(user_email: str = Depends(get_current_user)):
+    return {'mensaje': '¡Has entrado a la zona VIP!', 'usuario': user_email}
 
 # Funcion para recibir la información del usuario
 @router.get('/{usuario_id}', response_model=schemas.UsuarioResponse)
@@ -65,4 +69,5 @@ def delete_user(usuario_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {'Mensaje': 'Usuario eliminado de Shiai Time'}
+
 
