@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
+load_dotenv()
+
 # Esta es la "dirección" de tu base de datos.
-SQLALCHEMY_DATABASE_URL = 'postgresql+psycopg2://shiai_admin:admin123@localhost/shiai_time_db'
+SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL')
 
 # El motor quue se encarga de hablar con PostgreSQL
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
