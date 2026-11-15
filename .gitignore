@@ -13,3 +13,5 @@ __pycache__/
 # Variables de entorno (secretos)
 .env
 
+# Editor (VS Code)
+.vscode/

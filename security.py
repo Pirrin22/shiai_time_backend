@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
 import jwt
@@ -5,9 +7,11 @@ from jwt.exceptions import InvalidTokenError
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
+load_dotenv()
+
 # --- Configuración JWT ---
 # En el futuro guardaremos esta clave en un archivo oculto(.env) por seguridad
-SECRET_KEY = 'tu_clave_secreta_super_segura_aqui_cambiala_luego'
+SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = 'HS256'
 ACCES_TOKEN_EXPIRE_MINUTES = 30 # EL token caduca en media hora
 
