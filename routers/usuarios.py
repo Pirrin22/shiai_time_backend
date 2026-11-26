@@ -28,9 +28,9 @@ def create_users(user: schemas.UsuarioCreate, db: Session = Depends(get_db)):
 
     return new_user
 
-@router.get('/me')
-def obtener_perfil(user_email: str = Depends(get_current_user)):
-    return {'mensaje': '¡Has entrado a la zona VIP!', 'usuario': user_email}
+@router.get('/me', response_model=schemas.UsuarioResponse)
+def obtener_perfil(current_user: models.User = Depends(get_current_user)):
+    return current_user
 
 # Funcion para recibir la información del usuario
 @router.get('/{usuario_id}', response_model=schemas.UsuarioResponse)
